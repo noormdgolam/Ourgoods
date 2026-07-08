@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Save, UploadCloud, X, Plus, Sparkles, Image as ImageIcon, Loader2, Trash2, Bold, Italic, Underline, Link, List, ListOrdered, AlignLeft, Info, Star } from 'lucide-react';
+import { ArrowLeft, Save, UploadCloud, X, Plus, Sparkles, Image as ImageIcon, Loader2, Trash2, Bold, Italic, Underline, Link, List, ListOrdered, AlignLeft, Info, Star, ChevronDown, ChevronRight } from 'lucide-react';
 import imageCompression from 'browser-image-compression';
 import Tesseract from 'tesseract.js';
 import MediaManagerModal from '../../components/MediaManagerModal';
@@ -42,6 +42,7 @@ const AddProduct = () => {
     };
   });
   const [productType, setProductType] = useState('domestic');
+  const [expandedCats, setExpandedCats] = useState({});
   const [categories, setCategories] = useState(() => {
     const initialCategories = {};
     for (const cat in categorySubcategories) {
@@ -1186,20 +1187,32 @@ const AddProduct = () => {
                 return (
                   <div key={cat}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#334155', cursor: 'pointer', fontWeight: isCatChecked ? 600 : 400 }}>
-                        <input 
-                          type="checkbox" 
-                          checked={isCatChecked}
-                          onChange={(e) => {
-                            const newCats = e.target.checked 
-                              ? [...currentCats, cat]
-                              : currentCats.filter(c => c !== cat);
-                            setFormData(prev => ({ ...prev, category: newCats }));
-                          }}
-                          style={{ width: '16px', height: '16px', borderRadius: '4px', cursor: 'pointer', accentColor: 'var(--brand-pink)' }}
-                        />
-                        {cat}
-                      </label>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <button 
+                          type="button" 
+                          onClick={(e) => { e.preventDefault(); setExpandedCats(prev => ({ ...prev, [cat]: !prev[cat] })); }}
+                          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', color: '#64748b' }}
+                        >
+                          {expandedCats[cat] ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                        </button>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#334155', cursor: 'pointer', fontWeight: isCatChecked ? 600 : 400 }}>
+                          <input 
+                            type="checkbox" 
+                            checked={isCatChecked}
+                            onChange={(e) => {
+                              const newCats = e.target.checked 
+                                ? [...currentCats, cat]
+                                : currentCats.filter(c => c !== cat);
+                              setFormData(prev => ({ ...prev, category: newCats }));
+                              if (e.target.checked && !expandedCats[cat]) {
+                                setExpandedCats(prev => ({ ...prev, [cat]: true }));
+                              }
+                            }}
+                            style={{ width: '16px', height: '16px', borderRadius: '4px', cursor: 'pointer', accentColor: 'var(--brand-pink)' }}
+                          />
+                          {cat}
+                        </label>
+                      </div>
                       <button 
                         type="button"
                         onClick={() => {
@@ -1222,8 +1235,9 @@ const AddProduct = () => {
                       </button>
                     </div>
                     
-                    {/* Subcategories (Indented) */}
-                    <div style={{ paddingLeft: '26px', marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {/* Subcategories (Indented & Collapsible) */}
+                    {expandedCats[cat] && (
+                    <div style={{ paddingLeft: '34px', marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       {subcats.length > 0 && subcats.map(sub => {
                         const currentSubcats = Array.isArray(formData.subcategory) ? formData.subcategory : (formData.subcategory ? formData.subcategory.split(', ') : []);
                         const isSubChecked = currentSubcats.includes(sub);
@@ -1237,7 +1251,17 @@ const AddProduct = () => {
                                   const newSubcats = e.target.checked 
                                     ? [...currentSubcats, sub]
                                     : currentSubcats.filter(s => s !== sub);
-                                  setFormData(prev => ({ ...prev, subcategory: newSubcats }));
+                                  
+                                  let newCats = [...currentCats];
+                                  if (e.target.checked && !newCats.includes(cat)) {
+                                    newCats.push(cat);
+                                  }
+
+                                  setFormData(prev => ({ 
+                                    ...prev, 
+                                    subcategory: newSubcats,
+                                    category: newCats
+                                  }));
                                 }}
                                 style={{ width: '14px', height: '14px', borderRadius: '3px', cursor: 'pointer', accentColor: 'var(--brand-pink)' }}
                               />
@@ -1280,6 +1304,7 @@ const AddProduct = () => {
                         + Add Subcategory
                       </button>
                     </div>
+                    )}
                   </div>
                 );
               })}
