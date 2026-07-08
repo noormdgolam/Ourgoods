@@ -920,6 +920,86 @@ const AddProduct = () => {
                       ))}
                     </div>
                   )}
+                  {attr.name === 'Material' && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '12px' }}>
+                      {['Cotton', 'Polyester', 'Leather', 'Wood', 'Metal', 'Plastic', 'Glass', 'Ceramic'].map(mat => (
+                        <span 
+                          key={mat}
+                          onClick={() => {
+                            const currentOpts = attr.options ? attr.options.split(',').map(o => o.trim()).filter(Boolean) : [];
+                            if (!currentOpts.includes(mat)) {
+                              handleAttributeChange(idx, 'options', [...currentOpts, mat].join(', '));
+                            }
+                          }}
+                          style={{ fontSize: '11px', padding: '4px 10px', background: '#e2e8f0', borderRadius: '16px', cursor: 'pointer', color: '#334155', fontWeight: 500, transition: 'all 0.2s', border: '1px solid #cbd5e1' }}
+                          onMouseOver={(e) => { e.currentTarget.style.background = '#cbd5e1'; e.currentTarget.style.borderColor = '#94a3b8'; }}
+                          onMouseOut={(e) => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
+                        >
+                          + {mat}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {attr.name === 'Style' && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '12px' }}>
+                      {['Modern', 'Classic', 'Vintage', 'Minimalist', 'Casual', 'Formal', 'Sport'].map(style => (
+                        <span 
+                          key={style}
+                          onClick={() => {
+                            const currentOpts = attr.options ? attr.options.split(',').map(o => o.trim()).filter(Boolean) : [];
+                            if (!currentOpts.includes(style)) {
+                              handleAttributeChange(idx, 'options', [...currentOpts, style].join(', '));
+                            }
+                          }}
+                          style={{ fontSize: '11px', padding: '4px 10px', background: '#e2e8f0', borderRadius: '16px', cursor: 'pointer', color: '#334155', fontWeight: 500, transition: 'all 0.2s', border: '1px solid #cbd5e1' }}
+                          onMouseOver={(e) => { e.currentTarget.style.background = '#cbd5e1'; e.currentTarget.style.borderColor = '#94a3b8'; }}
+                          onMouseOut={(e) => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
+                        >
+                          + {style}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {attr.name === 'Capacity' && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '12px' }}>
+                      {['16GB', '32GB', '64GB', '128GB', '256GB', '512GB', '1TB', '100ml', '250ml', '500ml', '1L'].map(cap => (
+                        <span 
+                          key={cap}
+                          onClick={() => {
+                            const currentOpts = attr.options ? attr.options.split(',').map(o => o.trim()).filter(Boolean) : [];
+                            if (!currentOpts.includes(cap)) {
+                              handleAttributeChange(idx, 'options', [...currentOpts, cap].join(', '));
+                            }
+                          }}
+                          style={{ fontSize: '11px', padding: '4px 10px', background: '#e2e8f0', borderRadius: '16px', cursor: 'pointer', color: '#334155', fontWeight: 500, transition: 'all 0.2s', border: '1px solid #cbd5e1' }}
+                          onMouseOver={(e) => { e.currentTarget.style.background = '#cbd5e1'; e.currentTarget.style.borderColor = '#94a3b8'; }}
+                          onMouseOut={(e) => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
+                        >
+                          + {cap}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {attr.name === 'Model' && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '12px' }}>
+                      {['Base', 'Pro', 'Max', 'Ultra', 'Plus', 'Mini', 'Lite'].map(mod => (
+                        <span 
+                          key={mod}
+                          onClick={() => {
+                            const currentOpts = attr.options ? attr.options.split(',').map(o => o.trim()).filter(Boolean) : [];
+                            if (!currentOpts.includes(mod)) {
+                              handleAttributeChange(idx, 'options', [...currentOpts, mod].join(', '));
+                            }
+                          }}
+                          style={{ fontSize: '11px', padding: '4px 10px', background: '#e2e8f0', borderRadius: '16px', cursor: 'pointer', color: '#334155', fontWeight: 500, transition: 'all 0.2s', border: '1px solid #cbd5e1' }}
+                          onMouseOver={(e) => { e.currentTarget.style.background = '#cbd5e1'; e.currentTarget.style.borderColor = '#94a3b8'; }}
+                          onMouseOut={(e) => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
+                        >
+                          + {mod}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <button 
                   className="icon-btn" 
