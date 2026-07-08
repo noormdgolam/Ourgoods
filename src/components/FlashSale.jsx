@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveScrollAndNavigate } from '../utils/navigation';
 
@@ -21,17 +21,19 @@ const FlashSale = ({ category }) => {
   };
 
 
-  const allProducts = getAllProducts();
-  
-  // Filter for highly discounted items and shuffle to randomize on refresh
-  const flashSaleProducts = allProducts
-    .filter(p => p.discount >= 20 || p.isFlashSale)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 10);
+  const displayProducts = useMemo(() => {
+    const allProducts = getAllProducts();
+    const flashSaleProducts = allProducts
+      .filter(p => p.discount >= 20 || p.isFlashSale)
+      .sort((a, b) => b.soldCount - a.soldCount)
+      .slice(0, 30)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 10);
 
-  const displayProducts = category 
-    ? flashSaleProducts.filter(p => p.category === category)
-    : flashSaleProducts;
+    return category 
+      ? flashSaleProducts.filter(p => p.category === category)
+      : flashSaleProducts;
+  }, [category]);
 
   useEffect(() => {
     const timer = setInterval(() => {

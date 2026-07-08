@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveScrollAndNavigate } from '../utils/navigation';
 import { getAllProducts } from '../utils/MockData';
@@ -8,15 +8,23 @@ const OurgoodsWholesale = () => {
   const scrollRef = useRef(null);
   
   // Get Factory / Wholesale products and randomize on refresh
-  const wholesaleProducts = getAllProducts()
-    .filter(p => p.type === 'factory' || p.product_type === 'Factory Direct')
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 10);
+  const wholesaleProducts = useMemo(() => {
+    const products = getAllProducts()
+      .filter(p => p.type === 'factory' || p.product_type === 'Factory Direct')
+      .sort((a, b) => b.soldCount - a.soldCount) // High selling
+      .slice(0, 30) // Top 30
+      .sort(() => 0.5 - Math.random()) // Shuffle
+      .slice(0, 10);
 
-  // Fallback to random if none match the exact type
-  if (wholesaleProducts.length === 0) {
-    wholesaleProducts.push(...getAllProducts().sort(() => 0.5 - Math.random()).slice(0, 8));
-  }
+    if (products.length === 0) {
+      return getAllProducts()
+        .sort((a, b) => b.soldCount - a.soldCount)
+        .slice(0, 30)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 10);
+    }
+    return products;
+  }, []);
 
   const scrollLeft = () => {
     if (scrollRef.current) scrollRef.current.scrollBy({ left: -200, behavior: 'smooth' });
