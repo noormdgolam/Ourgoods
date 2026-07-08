@@ -1174,20 +1174,42 @@ const AddProduct = () => {
                 
                 return (
                   <div key={cat}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#334155', cursor: 'pointer', fontWeight: isCatChecked ? 600 : 400 }}>
-                      <input 
-                        type="checkbox" 
-                        checked={isCatChecked}
-                        onChange={(e) => {
-                          const newCats = e.target.checked 
-                            ? [...currentCats, cat]
-                            : currentCats.filter(c => c !== cat);
-                          setFormData(prev => ({ ...prev, category: newCats }));
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#334155', cursor: 'pointer', fontWeight: isCatChecked ? 600 : 400 }}>
+                        <input 
+                          type="checkbox" 
+                          checked={isCatChecked}
+                          onChange={(e) => {
+                            const newCats = e.target.checked 
+                              ? [...currentCats, cat]
+                              : currentCats.filter(c => c !== cat);
+                            setFormData(prev => ({ ...prev, category: newCats }));
+                          }}
+                          style={{ width: '16px', height: '16px', borderRadius: '4px', cursor: 'pointer', accentColor: 'var(--brand-pink)' }}
+                        />
+                        {cat}
+                      </label>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          if (window.confirm(`Delete category "${cat}"?`)) {
+                            const newCats = { ...categories };
+                            delete newCats[cat];
+                            setCategories(newCats);
+                            setFormData(prev => ({
+                              ...prev,
+                              category: (Array.isArray(prev.category) ? prev.category : prev.category?.split(', ') || []).filter(c => c !== cat)
+                            }));
+                          }
                         }}
-                        style={{ width: '16px', height: '16px', borderRadius: '4px', cursor: 'pointer', accentColor: 'var(--brand-pink)' }}
-                      />
-                      {cat}
-                    </label>
+                        style={{ background: 'none', border: 'none', color: '#cbd5e1', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
+                        onMouseOver={e => e.currentTarget.style.color = '#ef4444'}
+                        onMouseOut={e => e.currentTarget.style.color = '#cbd5e1'}
+                        title="Delete Category"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                     
                     {/* Subcategories (Indented) */}
                     <div style={{ paddingLeft: '26px', marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1195,20 +1217,40 @@ const AddProduct = () => {
                         const currentSubcats = Array.isArray(formData.subcategory) ? formData.subcategory : (formData.subcategory ? formData.subcategory.split(', ') : []);
                         const isSubChecked = currentSubcats.includes(sub);
                         return (
-                          <label key={sub} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13.5px', color: '#64748b', cursor: 'pointer' }}>
-                            <input 
-                              type="checkbox" 
-                              checked={isSubChecked}
-                              onChange={(e) => {
-                                const newSubcats = e.target.checked 
-                                  ? [...currentSubcats, sub]
-                                  : currentSubcats.filter(s => s !== sub);
-                                setFormData(prev => ({ ...prev, subcategory: newSubcats }));
+                          <div key={sub} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13.5px', color: '#64748b', cursor: 'pointer' }}>
+                              <input 
+                                type="checkbox" 
+                                checked={isSubChecked}
+                                onChange={(e) => {
+                                  const newSubcats = e.target.checked 
+                                    ? [...currentSubcats, sub]
+                                    : currentSubcats.filter(s => s !== sub);
+                                  setFormData(prev => ({ ...prev, subcategory: newSubcats }));
+                                }}
+                                style={{ width: '14px', height: '14px', borderRadius: '3px', cursor: 'pointer', accentColor: 'var(--brand-pink)' }}
+                              />
+                              {sub}
+                            </label>
+                            <button 
+                              type="button"
+                              onClick={() => {
+                                if (window.confirm(`Delete subcategory "${sub}"?`)) {
+                                  setCategories(prev => ({ ...prev, [cat]: prev[cat].filter(s => s !== sub) }));
+                                  setFormData(prev => ({
+                                    ...prev,
+                                    subcategory: (Array.isArray(prev.subcategory) ? prev.subcategory : prev.subcategory?.split(', ') || []).filter(s => s !== sub)
+                                  }));
+                                }
                               }}
-                              style={{ width: '14px', height: '14px', borderRadius: '3px', cursor: 'pointer', accentColor: 'var(--brand-pink)' }}
-                            />
-                            {sub}
-                          </label>
+                              style={{ background: 'none', border: 'none', color: '#cbd5e1', cursor: 'pointer', padding: '2px', display: 'flex', alignItems: 'center' }}
+                              onMouseOver={e => e.currentTarget.style.color = '#ef4444'}
+                              onMouseOut={e => e.currentTarget.style.color = '#cbd5e1'}
+                              title="Delete Subcategory"
+                            >
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
                         );
                       })}
                       
