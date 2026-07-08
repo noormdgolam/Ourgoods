@@ -19,6 +19,12 @@ const TABS = [
 const TabPage = ({ tabLabel }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const observerTarget = useRef(null);
+  const loadingRef = useRef(loading);
+
+  useEffect(() => {
+    loadingRef.current = loading;
+  }, [loading]);
 
   useEffect(() => {
     if (dailyDiscoverCache[tabLabel]) {
@@ -30,38 +36,41 @@ const TabPage = ({ tabLabel }) => {
     }
   }, [tabLabel]);
 
-  const loadMore = () => {
-    setLoading(true);
-    setTimeout(() => {
-      const moreProducts = generateProducts(tabLabel === 'All Products' ? 'recommended' : tabLabel, 10);
-      const updatedProducts = [...products, ...moreProducts];
-      dailyDiscoverCache[tabLabel] = updatedProducts;
-      setProducts(updatedProducts);
-      setLoading(false);
-    }, 1000);
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && !loadingRef.current) {
+          setLoading(true);
+          setTimeout(() => {
+            setProducts(prev => {
+              const moreProducts = generateProducts(tabLabel === 'All Products' ? 'recommended' : tabLabel, 10);
+              const updatedProducts = [...prev, ...moreProducts];
+              dailyDiscoverCache[tabLabel] = updatedProducts;
+              return updatedProducts;
+            });
+            setLoading(false);
+          }, 800);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => observer.disconnect();
+  }, [tabLabel]);
 
   return (
     <div style={{ height: '100%', overflowY: 'auto' }}>
       <div className="product-grid">
-        {products.map(product => (
-          <ProductCard key={product.id} product={product} />
+        {products.map((product, idx) => (
+          <ProductCard key={`${product.id}-${idx}`} product={product} />
         ))}
       </div>
-      <div style={{ textAlign: 'center', padding: '20px 0' }}>
-        {loading ? (
-          <i className="las la-spinner la-spin text-pink" style={{ fontSize: '30px' }}></i>
-        ) : (
-          <button 
-            onClick={loadMore}
-            style={{
-              background: '#fff', border: '1px solid #ddd', padding: '10px 20px', 
-              borderRadius: '20px', fontSize: '12px', fontWeight: 600, color: '#333'
-            }}
-          >
-            Load More Products
-          </button>
-        )}
+      <div ref={observerTarget} style={{ textAlign: 'center', padding: '20px 0', height: '40px' }}>
+        {loading && <i className="las la-spinner la-spin text-pink" style={{ fontSize: '30px' }}></i>}
       </div>
     </div>
   );
