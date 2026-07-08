@@ -151,6 +151,11 @@ const FlashSale = ({ category }) => {
               </div>
             </div>
 
+            {/* Title */}
+            <div style={{ fontSize: '11px', fontWeight: 600, color: '#333', marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {product.title}
+            </div>
+
             {/* Prices */}
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', marginBottom: '2px' }}>
               <span style={{ color: 'var(--brand-pink)', fontWeight: 900, fontSize: '14px' }}>৳{Number(product.price).toLocaleString()}</span>
