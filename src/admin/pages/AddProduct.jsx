@@ -1179,8 +1179,8 @@ const AddProduct = () => {
             <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: '16px', fontWeight: 600 }}>Categories</h3>
             
             <div style={{ maxHeight: '350px', overflowY: 'auto', paddingRight: '8px', display: 'flex', flexDirection: 'column', gap: '16px', borderTop: '1px solid #f1f5f9', paddingTop: '16px' }}>
-              {Object.keys(categories).sort((a, b) => a.localeCompare(b)).map(cat => {
-                const subcats = [...(categories[cat] || [])].sort((a, b) => a.localeCompare(b));
+              {Object.keys(categories).map(cat => {
+                const subcats = [...(categories[cat] || [])];
                 const currentCats = Array.isArray(formData.category) ? formData.category : (formData.category ? formData.category.split(', ') : []);
                 const isCatChecked = currentCats.includes(cat);
                 
