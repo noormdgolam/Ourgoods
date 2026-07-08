@@ -22,6 +22,7 @@ const AddProduct = () => {
   const [isImporting, setIsImporting] = useState(false);
   const [showMediaManager, setShowMediaManager] = useState(false);
   const [importUrl, setImportUrl] = useState('');
+  const [draggedImgIdx, setDraggedImgIdx] = useState(null);
   const [formData, setFormData] = useState(() => {
     try {
       const saved = localStorage.getItem('addProductData');
@@ -138,6 +139,30 @@ const AddProduct = () => {
       newAttr[index] = { ...newAttr[index], [field]: value };
       return { ...prev, attributes: newAttr };
     });
+  };
+
+  const handleDragStart = (e, index) => {
+    setDraggedImgIdx(index);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e, index) => {
+    e.preventDefault();
+    if (draggedImgIdx === null || draggedImgIdx === index) return;
+    
+    const newImages = [...images];
+    const draggedImg = newImages[draggedImgIdx];
+    
+    newImages.splice(draggedImgIdx, 1);
+    newImages.splice(index, 0, draggedImg);
+    
+    setImages(newImages);
+    setDraggedImgIdx(null);
   };
 
   const formatSize = (bytes) => {
@@ -666,7 +691,19 @@ const AddProduct = () => {
             {images.length > 0 && (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '12px' }}>
                 {images.map((img, idx) => (
-                  <div key={idx} style={{ aspectRatio: '1', backgroundColor: '#f1f5f9', borderRadius: '10px', position: 'relative', overflow: 'hidden', border: '1px solid #e2e8f0' }}>
+                  <div 
+                    key={idx} 
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, idx)}
+                    onDragOver={(e) => handleDragOver(e, idx)}
+                    onDrop={(e) => handleDrop(e, idx)}
+                    style={{ aspectRatio: '1', backgroundColor: '#f1f5f9', borderRadius: '10px', position: 'relative', overflow: 'hidden', border: idx === 0 ? '2px solid var(--brand-pink)' : '1px solid #e2e8f0', cursor: 'grab', transition: 'border 0.2s' }}
+                  >
+                    {idx === 0 && (
+                      <div style={{ position: 'absolute', top: '6px', left: '6px', background: 'var(--brand-pink)', color: '#fff', fontSize: '9px', fontWeight: 700, padding: '3px 6px', borderRadius: '4px', zIndex: 10, boxShadow: '0 2px 4px rgba(228,50,146,0.3)', letterSpacing: '0.05em' }}>
+                        MAIN IMAGE
+                      </div>
+                    )}
                     {img.url ? (
                       (img.type && img.type.startsWith('video/')) || img.url.match(/\.(mp4|webm|ogg)$/i) ? (
                         <video src={img.url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} autoPlay muted loop playsInline />
