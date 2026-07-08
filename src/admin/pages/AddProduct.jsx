@@ -6,6 +6,7 @@ import Tesseract from 'tesseract.js';
 import MediaManagerModal from '../../components/MediaManagerModal';
 import { addProductToFrontend } from '../../utils/MockData';
 import { categorySubcategories } from '../../components/CategorySubcategories';
+import { allCategories } from '../../components/AllCategorySection';
 import realProducts from '../../utils/realProducts.json';
 import '../admin.css';
 
@@ -1197,8 +1198,11 @@ const AddProduct = () => {
                         </button>
                         <span 
                           onClick={(e) => { e.preventDefault(); setExpandedCats(prev => ({ ...prev, [cat]: !prev[cat] })); }}
-                          style={{ fontSize: '14px', color: '#334155', cursor: 'pointer', fontWeight: isCatChecked ? 600 : 400, userSelect: 'none' }}
+                          style={{ fontSize: '14px', color: '#334155', cursor: 'pointer', fontWeight: isCatChecked ? 600 : 400, userSelect: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}
                         >
+                          {allCategories.find(c => c.name === cat)?.icon && (
+                            <i className={allCategories.find(c => c.name === cat).icon} style={{ fontSize: '18px', color: 'var(--brand-pink)' }}></i>
+                          )}
                           {cat}
                         </span>
                       </div>
