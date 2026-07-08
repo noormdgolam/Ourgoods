@@ -38,7 +38,17 @@ const MarketPage = () => {
     case 'flash-sale':
       headerTitle = 'FLASH SALE';
       headerIcon = 'las la-bolt';
-      filteredByMarket = productList.filter((p, i) => p.isFlashSale || i % 4 === 0);
+      filteredByMarket = productList.filter(p => p.discount >= 20 || p.isFlashSale);
+      break;
+    case 'global-shop':
+      headerTitle = 'GLOBAL SHOP';
+      headerIcon = 'las la-globe';
+      filteredByMarket = productList.filter(p => p.type === 'global' || p.type === 'China Pre-Order' || p.product_type === 'Global Product');
+      break;
+    case 'factory-direct':
+      headerTitle = 'FACTORY DIRECT';
+      headerIcon = 'las la-industry';
+      filteredByMarket = productList.filter(p => p.type === 'factory' || p.product_type === 'Factory Direct');
       break;
     case 'bangladesh-market':
       headerTitle = 'BANGLADESH MARKET';

@@ -78,7 +78,7 @@ const OurgoodsWholesale = () => {
           </div>
 
           <div 
-            onClick={() => saveScrollAndNavigate(navigate, '/ourgoods-wholesale')}
+            onClick={() => saveScrollAndNavigate(navigate, '/market/factory-direct')}
             style={{ color: '#fff', fontSize: '12px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', flexShrink: 0 }}>
             View All <i className="las la-angle-right" style={{ fontSize: '14px' }}></i>
           </div>
