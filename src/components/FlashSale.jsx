@@ -13,11 +13,19 @@ const FlashSale = ({ category }) => {
   });
   const scrollRef = useRef(null);
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const scrollLeft = () => {
-    if (scrollRef.current) scrollRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+    setCurrentIndex(prev => {
+      const prevIdx = prev - 3;
+      return prevIdx < 0 ? Math.max(0, displayProducts.length - 3) : prevIdx;
+    });
   };
   const scrollRight = () => {
-    if (scrollRef.current) scrollRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+    setCurrentIndex(prev => {
+      const next = prev + 3;
+      return next >= displayProducts.length ? 0 : next;
+    });
   };
 
 
@@ -28,7 +36,7 @@ const FlashSale = ({ category }) => {
       .sort((a, b) => b.soldCount - a.soldCount)
       .slice(0, 30)
       .sort(() => 0.5 - Math.random())
-      .slice(0, 3);
+      .slice(0, 15);
 
     return category 
       ? flashSaleProducts.filter(p => p.category === category)
@@ -133,7 +141,7 @@ const FlashSale = ({ category }) => {
         </div>
 
         <div ref={scrollRef} className="no-scrollbar" style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '15px', scrollBehavior: 'smooth' }}>
-          {displayProducts.map((product) => (
+          {displayProducts.slice(currentIndex, currentIndex + 3).map((product) => (
           <div key={product.id} style={{ minWidth: '110px', width: '110px', flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
             
             {/* Image Box */}

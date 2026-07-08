@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveScrollAndNavigate } from '../utils/navigation';
 import { getAllProducts } from '../utils/MockData';
@@ -14,23 +14,31 @@ const OurgoodsPreOrder = () => {
       .sort((a, b) => b.soldCount - a.soldCount) // High selling
       .slice(0, 30) // Top 30
       .sort(() => 0.5 - Math.random()) // Shuffle
-      .slice(0, 3);
+      .slice(0, 15);
       
     if (products.length === 0) {
       return getAllProducts()
         .sort((a, b) => b.soldCount - a.soldCount)
         .slice(0, 30)
         .sort(() => 0.5 - Math.random())
-        .slice(0, 3);
+        .slice(0, 15);
     }
     return products;
   }, []);
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const scrollLeft = () => {
-    if (scrollRef.current) scrollRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+    setCurrentIndex(prev => {
+      const prevIdx = prev - 3;
+      return prevIdx < 0 ? Math.max(0, preOrderProducts.length - 3) : prevIdx;
+    });
   };
   const scrollRight = () => {
-    if (scrollRef.current) scrollRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+    setCurrentIndex(prev => {
+      const next = prev + 3;
+      return next >= preOrderProducts.length ? 0 : next;
+    });
   };
 
   return (
@@ -86,7 +94,7 @@ const OurgoodsPreOrder = () => {
           </div>
           
           <div ref={scrollRef} className="no-scrollbar" style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '15px', scrollBehavior: 'smooth' }}>
-            {preOrderProducts.map((product) => (
+            {preOrderProducts.slice(currentIndex, currentIndex + 3).map((product) => (
             <div key={product.id} style={{ minWidth: '110px', width: '110px', flexShrink: 0, display: 'flex', flexDirection: 'column', cursor: 'pointer' }} onClick={() => navigate(`/product/${product.id}`)}>
               
               {/* Image Box */}
