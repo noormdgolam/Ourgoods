@@ -142,26 +142,35 @@ const AddProduct = () => {
   };
 
   const handleDragStart = (e, index) => {
-    setDraggedImgIdx(index);
+    // Use timeout so the browser captures the drag image before we fade it
+    setTimeout(() => setDraggedImgIdx(index), 0);
     e.dataTransfer.effectAllowed = 'move';
   };
 
-  const handleDragOver = (e, index) => {
+  const handleDragEnter = (e, index) => {
+    e.preventDefault();
+    if (draggedImgIdx === null || draggedImgIdx === index) return;
+    
+    setImages(prev => {
+      const newImages = [...prev];
+      const draggedImg = newImages[draggedImgIdx];
+      newImages.splice(draggedImgIdx, 1);
+      newImages.splice(index, 0, draggedImg);
+      return newImages;
+    });
+    setDraggedImgIdx(index);
+  };
+
+  const handleDragOver = (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
   };
 
-  const handleDrop = (e, index) => {
+  const handleDrop = (e) => {
     e.preventDefault();
-    if (draggedImgIdx === null || draggedImgIdx === index) return;
-    
-    const newImages = [...images];
-    const draggedImg = newImages[draggedImgIdx];
-    
-    newImages.splice(draggedImgIdx, 1);
-    newImages.splice(index, 0, draggedImg);
-    
-    setImages(newImages);
+  };
+
+  const handleDragEnd = () => {
     setDraggedImgIdx(null);
   };
 
@@ -716,12 +725,27 @@ const AddProduct = () => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '16px' }}>
                 {images.map((img, idx) => (
                   <div 
-                    key={idx} 
+                    key={img.url || img.name || idx} 
                     draggable
                     onDragStart={(e) => handleDragStart(e, idx)}
-                    onDragOver={(e) => handleDragOver(e, idx)}
-                    onDrop={(e) => handleDrop(e, idx)}
-                    style={{ aspectRatio: '1', backgroundColor: '#f1f5f9', borderRadius: '12px', position: 'relative', overflow: 'hidden', border: idx === 0 ? '2px solid var(--brand-pink)' : '1px solid #e2e8f0', cursor: 'grab', transition: 'all 0.2s', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                    onDragEnter={(e) => handleDragEnter(e, idx)}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    onDragEnd={handleDragEnd}
+                    style={{ 
+                      aspectRatio: '1', 
+                      backgroundColor: '#f1f5f9', 
+                      borderRadius: '12px', 
+                      position: 'relative', 
+                      overflow: 'hidden', 
+                      border: idx === 0 ? '2px solid var(--brand-pink)' : '1px solid #e2e8f0', 
+                      cursor: draggedImgIdx === idx ? 'grabbing' : 'grab', 
+                      transition: 'all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)', 
+                      boxShadow: draggedImgIdx === idx ? '0 10px 15px -3px rgba(0, 0, 0, 0.2)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      opacity: draggedImgIdx === idx ? 0.3 : 1,
+                      transform: draggedImgIdx === idx ? 'scale(0.95)' : 'scale(1)',
+                      zIndex: draggedImgIdx === idx ? 10 : 1
+                    }}
                   >
                     {idx === 0 && (
                       <div style={{ position: 'absolute', top: '8px', left: '8px', background: 'rgba(228,50,146,0.95)', color: '#fff', fontSize: '9px', fontWeight: 700, padding: '4px 8px', borderRadius: '12px', zIndex: 10, boxShadow: '0 2px 4px rgba(228,50,146,0.3)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', gap: '4px' }}>
