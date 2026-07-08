@@ -28,7 +28,7 @@ const FlashSale = ({ category }) => {
       .sort((a, b) => b.soldCount - a.soldCount)
       .slice(0, 30)
       .sort(() => 0.5 - Math.random())
-      .slice(0, 10);
+      .slice(0, 3);
 
     return category 
       ? flashSaleProducts.filter(p => p.category === category)

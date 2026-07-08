@@ -14,14 +14,14 @@ const OurgoodsPreOrder = () => {
       .sort((a, b) => b.soldCount - a.soldCount) // High selling
       .slice(0, 30) // Top 30
       .sort(() => 0.5 - Math.random()) // Shuffle
-      .slice(0, 10);
+      .slice(0, 3);
       
     if (products.length === 0) {
       return getAllProducts()
         .sort((a, b) => b.soldCount - a.soldCount)
         .slice(0, 30)
         .sort(() => 0.5 - Math.random())
-        .slice(0, 10);
+        .slice(0, 3);
     }
     return products;
   }, []);
