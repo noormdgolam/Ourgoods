@@ -699,7 +699,7 @@ const AddProduct = () => {
               style={{ 
                 border: '2px dashed #cbd5e1', 
                 borderRadius: '12px', 
-                padding: '40px 20px', 
+                padding: '24px 20px', 
                 textAlign: 'center', 
                 cursor: 'pointer', 
                 marginBottom: '24px', 
@@ -714,11 +714,11 @@ const AddProduct = () => {
               onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#f1f5f9'; e.currentTarget.style.borderColor = 'var(--brand-pink)'; }}
               onMouseOut={(e) => { e.currentTarget.style.backgroundColor = isCompressing ? '#f1f5f9' : '#f8fafc'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
             >
-              <div style={{ width: '48px', height: '48px', backgroundColor: '#fff0f6', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
-                <UploadCloud size={24} color="var(--brand-pink)" />
+              <div style={{ width: '40px', height: '40px', backgroundColor: '#fff0f6', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                <UploadCloud size={20} color="var(--brand-pink)" />
               </div>
-              <p style={{ margin: '0 0 8px', fontWeight: 600, fontSize: '15px', color: '#1e293b' }}>Click to upload or drag & drop</p>
-              <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>SVG, PNG, JPG, WEBP or MP4 (max. 10MB)</p>
+              <p style={{ margin: '0 0 4px', fontWeight: 600, fontSize: '14px', color: '#1e293b' }}>Click to upload or drag & drop</p>
+              <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>SVG, PNG, JPG, WEBP or MP4 (max. 10MB)</p>
             </div>
 
             {images.length > 0 && (
