@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Save, UploadCloud, X, Plus, Sparkles, Image as ImageIcon, Loader2, Trash2, Bold, Italic, Underline, Link, List, ListOrdered, AlignLeft, Info } from 'lucide-react';
+import { ArrowLeft, Save, UploadCloud, X, Plus, Sparkles, Image as ImageIcon, Loader2, Trash2, Bold, Italic, Underline, Link, List, ListOrdered, AlignLeft, Info, Star } from 'lucide-react';
 import imageCompression from 'browser-image-compression';
 import Tesseract from 'tesseract.js';
 import MediaManagerModal from '../../components/MediaManagerModal';
@@ -664,11 +664,15 @@ const AddProduct = () => {
           </div>
 
           {/* Media */}
-          <div className="form-section" style={{ backgroundColor: 'var(--admin-surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--admin-border)' }}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: isCompressing ? '12px' : '0' }}>
+          <div className="form-section" style={{ backgroundColor: '#ffffff', padding: '24px', borderRadius: '8px', border: '1px solid #e5e7eb', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <div>
+                <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 600 }}>Product Media</h3>
+                <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>Upload high-quality images and videos.</p>
+              </div>
               {isCompressing && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#10b981', fontWeight: 600 }}>
-                  <Loader2 size={14} className="spin" /> Compressing & Optimizing...
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#10b981', fontWeight: 600, backgroundColor: '#d1fae5', padding: '6px 12px', borderRadius: '20px' }}>
+                  <Loader2 size={14} className="spin" /> Optimizing...
                 </div>
               )}
             </div>
@@ -682,14 +686,34 @@ const AddProduct = () => {
               onChange={handleFileChange} 
             />
 
-            <div style={{ border: '2px dashed var(--admin-border)', borderRadius: '12px', padding: '32px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: '20px', backgroundColor: isCompressing ? 'var(--admin-bg)' : '#fafafa', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} onClick={handleImageUpload}>
-              <UploadCloud size={28} color="var(--brand-pink)" style={{ marginBottom: '12px' }} />
-              <p style={{ margin: '0 0 4px', fontWeight: 600, fontSize: '14px', color: '#333' }}>Upload Product Media</p>
-              <p style={{ margin: 0, fontSize: '12px', color: 'var(--admin-text-muted)' }}>Drag & drop or click to browse (JPG, PNG, WEBP, MP4)</p>
+            <div 
+              style={{ 
+                border: '2px dashed #cbd5e1', 
+                borderRadius: '12px', 
+                padding: '40px 20px', 
+                textAlign: 'center', 
+                cursor: 'pointer', 
+                marginBottom: '24px', 
+                backgroundColor: isCompressing ? '#f1f5f9' : '#f8fafc', 
+                transition: 'all 0.2s', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center', 
+                justifyContent: 'center' 
+              }} 
+              onClick={handleImageUpload}
+              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#f1f5f9'; e.currentTarget.style.borderColor = 'var(--brand-pink)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = isCompressing ? '#f1f5f9' : '#f8fafc'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
+            >
+              <div style={{ width: '48px', height: '48px', backgroundColor: '#fff0f6', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                <UploadCloud size={24} color="var(--brand-pink)" />
+              </div>
+              <p style={{ margin: '0 0 8px', fontWeight: 600, fontSize: '15px', color: '#1e293b' }}>Click to upload or drag & drop</p>
+              <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>SVG, PNG, JPG, WEBP or MP4 (max. 10MB)</p>
             </div>
 
             {images.length > 0 && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '12px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '16px' }}>
                 {images.map((img, idx) => (
                   <div 
                     key={idx} 
@@ -697,11 +721,11 @@ const AddProduct = () => {
                     onDragStart={(e) => handleDragStart(e, idx)}
                     onDragOver={(e) => handleDragOver(e, idx)}
                     onDrop={(e) => handleDrop(e, idx)}
-                    style={{ aspectRatio: '1', backgroundColor: '#f1f5f9', borderRadius: '10px', position: 'relative', overflow: 'hidden', border: idx === 0 ? '2px solid var(--brand-pink)' : '1px solid #e2e8f0', cursor: 'grab', transition: 'border 0.2s' }}
+                    style={{ aspectRatio: '1', backgroundColor: '#f1f5f9', borderRadius: '12px', position: 'relative', overflow: 'hidden', border: idx === 0 ? '2px solid var(--brand-pink)' : '1px solid #e2e8f0', cursor: 'grab', transition: 'all 0.2s', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
                   >
                     {idx === 0 && (
-                      <div style={{ position: 'absolute', top: '6px', left: '6px', background: 'var(--brand-pink)', color: '#fff', fontSize: '9px', fontWeight: 700, padding: '3px 6px', borderRadius: '4px', zIndex: 10, boxShadow: '0 2px 4px rgba(228,50,146,0.3)', letterSpacing: '0.05em' }}>
-                        MAIN IMAGE
+                      <div style={{ position: 'absolute', top: '8px', left: '8px', background: 'rgba(228,50,146,0.95)', color: '#fff', fontSize: '9px', fontWeight: 700, padding: '4px 8px', borderRadius: '12px', zIndex: 10, boxShadow: '0 2px 4px rgba(228,50,146,0.3)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <Star size={10} fill="#fff" /> MAIN
                       </div>
                     )}
                     {img.url ? (
@@ -712,19 +736,24 @@ const AddProduct = () => {
                       )
                     ) : (
                       <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <ImageIcon size={20} color="#94a3b8" />
+                        <ImageIcon size={24} color="#94a3b8" />
                       </div>
                     )}
-                    <button onClick={(e) => { e.stopPropagation(); removeImage(idx); }} style={{ position: 'absolute', top: '6px', right: '6px', background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', borderRadius: '50%', width: '22px', height: '22px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(4px)', padding: 0 }}>
-                      <X size={12} />
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); removeImage(idx); }} 
+                      style={{ position: 'absolute', top: '8px', right: '8px', background: 'rgba(255,255,255,0.9)', color: '#ef4444', border: 'none', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 5px rgba(0,0,0,0.15)', transition: 'all 0.2s', zIndex: 10 }}
+                      onMouseOver={(e) => { e.currentTarget.style.background = '#ef4444'; e.currentTarget.style.color = '#fff'; }}
+                      onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.9)'; e.currentTarget.style.color = '#ef4444'; }}
+                    >
+                      <X size={14} strokeWidth={2.5} />
                     </button>
-                    <div style={{ position: 'absolute', bottom: '6px', left: '6px', right: '6px', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ position: 'absolute', bottom: '8px', left: '8px', right: '8px', display: 'flex', justifyContent: 'center' }}>
                       {img.isExisting ? (
-                        <div style={{ background: 'rgba(16, 185, 129, 0.9)', color: '#fff', fontSize: '9px', fontWeight: 600, padding: '3px 6px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '3px', backdropFilter: 'blur(2px)' }}>
-                          <Sparkles size={8} /> Auto-Compressed
+                        <div style={{ background: 'rgba(15, 23, 42, 0.75)', color: '#10b981', fontSize: '9px', fontWeight: 600, padding: '4px 8px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '4px', backdropFilter: 'blur(4px)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                          <Sparkles size={10} /> Optimized
                         </div>
                       ) : (
-                        <div style={{ background: 'rgba(16, 185, 129, 0.9)', color: '#fff', fontSize: '9px', fontWeight: 600, padding: '3px 6px', borderRadius: '4px', backdropFilter: 'blur(2px)' }}>
+                        <div style={{ background: 'rgba(15, 23, 42, 0.75)', color: '#fff', fontSize: '9px', fontWeight: 600, padding: '4px 8px', borderRadius: '12px', backdropFilter: 'blur(4px)', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
                           {formatSize(img.compressedSize)}
                         </div>
                       )}
