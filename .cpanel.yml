@@ -1,11 +1,11 @@
 ---
 deployment:
   tasks:
-    - /bin/cp index.html /home/abongsha/Ourgoods.com.bd/
-    - /bin/cp .htaccess /home/abongsha/Ourgoods.com.bd/ || true
-    - /bin/cp -R assets /home/abongsha/Ourgoods.com.bd/
-    - /bin/cp -R images /home/abongsha/Ourgoods.com.bd/ || true
-    - /bin/cp favicon.svg /home/abongsha/Ourgoods.com.bd/ || true
-    - /bin/cp icons.svg /home/abongsha/Ourgoods.com.bd/ || true
-    - /bin/cp manifest.json /home/abongsha/Ourgoods.com.bd/ || true
-    - /bin/cp realProducts.json /home/abongsha/Ourgoods.com.bd/ || true
+    - /bin/cp index.html /home/abongsha/ourgoods.bongshai.com/
+    - /bin/cp .htaccess /home/abongsha/ourgoods.bongshai.com/ || true
+    - /bin/cp -R assets /home/abongsha/ourgoods.bongshai.com/
+    - /bin/cp -R images /home/abongsha/ourgoods.bongshai.com/ || true
+    - /bin/cp favicon.svg /home/abongsha/ourgoods.bongshai.com/ || true
+    - /bin/cp icons.svg /home/abongsha/ourgoods.bongshai.com/ || true
+    - /bin/cp manifest.json /home/abongsha/ourgoods.bongshai.com/ || true
+    - /bin/cp realProducts.json /home/abongsha/ourgoods.bongshai.com/ || true
