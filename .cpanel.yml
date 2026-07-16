@@ -1,12 +1,11 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/abongsha/Ourgoods.com.bd
-    - /bin/cp index.html $DEPLOYPATH/
-    - /bin/cp .htaccess $DEPLOYPATH/ || true
-    - /bin/cp -R assets $DEPLOYPATH/
-    - /bin/cp -R images $DEPLOYPATH/ || true
-    - /bin/cp favicon.svg $DEPLOYPATH/ || true
-    - /bin/cp icons.svg $DEPLOYPATH/ || true
-    - /bin/cp manifest.json $DEPLOYPATH/ || true
-    - /bin/cp realProducts.json $DEPLOYPATH/ || true
+    - /bin/cp index.html /home/abongsha/Ourgoods.com.bd/
+    - /bin/cp .htaccess /home/abongsha/Ourgoods.com.bd/ || true
+    - /bin/cp -R assets /home/abongsha/Ourgoods.com.bd/
+    - /bin/cp -R images /home/abongsha/Ourgoods.com.bd/ || true
+    - /bin/cp favicon.svg /home/abongsha/Ourgoods.com.bd/ || true
+    - /bin/cp icons.svg /home/abongsha/Ourgoods.com.bd/ || true
+    - /bin/cp manifest.json /home/abongsha/Ourgoods.com.bd/ || true
+    - /bin/cp realProducts.json /home/abongsha/Ourgoods.com.bd/ || true
