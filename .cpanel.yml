@@ -3,6 +3,7 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/abongsha/Ourgoods.com.bd
     - /bin/cp index.html $DEPLOYPATH/
+    - /bin/cp .htaccess $DEPLOYPATH/ || true
     - /bin/cp -R assets $DEPLOYPATH/
     - /bin/cp -R images $DEPLOYPATH/ || true
     - /bin/cp favicon.svg $DEPLOYPATH/ || true
