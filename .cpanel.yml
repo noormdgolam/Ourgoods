@@ -1,0 +1,12 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/$(whoami)/ourgoods.com.bd/
+    - if [ ! -d "$DEPLOYPATH" ]; then export DEPLOYPATH=/home/$(whoami)/public_html/; fi
+    - /bin/cp index.html $DEPLOYPATH || true
+    - /bin/cp -R assets $DEPLOYPATH || true
+    - /bin/cp -R images $DEPLOYPATH || true
+    - /bin/cp favicon.svg $DEPLOYPATH || true
+    - /bin/cp icons.svg $DEPLOYPATH || true
+    - /bin/cp manifest.json $DEPLOYPATH || true
+    - /bin/cp realProducts.json $DEPLOYPATH || true
